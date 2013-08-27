@@ -1,4 +1,4 @@
-package com.kodcu;
+package com.kodcu.main;
 
 import java.io.IOException;
 import java.util.Date;
@@ -93,7 +93,7 @@ public class JavaAPIMain {
         updateObject.put(field, newValue);
         
         client.prepareUpdate(index, type, id)
-              .setScript("ctx._source." + field + "=" +field)
+              .setScript("ctx._source." + field + "=" + field)
               .setScriptParams(updateObject).execute().actionGet();
     }
     

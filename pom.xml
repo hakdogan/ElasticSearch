@@ -5,7 +5,7 @@
   <groupId>com.kodcu</groupId>
   <artifactId>ElasticSearch</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>ElasticSearch</name>
   <url>http://maven.apache.org</url>
@@ -13,16 +13,52 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <elastic.version>0.90.3</elastic.version>
+    <jsf.version>2.2.2</jsf.version>
+    <primeFaces.version>3.5</primeFaces.version>
+    <primeFacesTheme.version>1.0.10</primeFacesTheme.version>
+    <jbossJ2ee.version>4.2.2.GA</jbossJ2ee.version>
+    <commonsFileUpload.version>1.3</commonsFileUpload.version>
+    <javaxJson.version>1.0-b04</javaxJson.version>
   </properties>
 
   <dependencies>
     
+      <dependency>
+          <groupId>org.glassfish</groupId>
+          <artifactId>javax.faces</artifactId>
+          <version>${jsf.version}</version>
+      </dependency>
+      
+      <dependency>
+          <groupId>org.primefaces</groupId>
+          <artifactId>primefaces</artifactId>
+          <version>${primeFaces.version}</version>
+      </dependency>
+        
+      <dependency>
+          <groupId>org.primefaces.themes</groupId>
+          <artifactId>bootstrap</artifactId>
+          <version>${primeFacesTheme.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>commons-fileupload</groupId>
+	  <artifactId>commons-fileupload</artifactId>
+	  <version>${commonsFileUpload.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.elasticsearch</groupId>
         <artifactId>elasticsearch</artifactId>
         <version>${elastic.version}</version>
     </dependency>
     
+    <dependency>
+        <groupId>jboss</groupId>
+        <artifactId>jboss-j2ee</artifactId>
+        <version>${jbossJ2ee.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -31,4 +67,36 @@
     </dependency>
     
   </dependencies>
+  
+  <repositories>
+      <repository>
+          <id>prime-repo</id>
+          <layout>default</layout>
+          <url>http://repository.primefaces.org/</url>
+      </repository>
+  </repositories>
+  
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.mortbay.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <version>7.4.4.v20110707</version>
+              <configuration>
+                  <stopPort>9966</stopPort>
+                  <stopKey>jetty-stop</stopKey>
+                  <scanIntervalSeconds>10</scanIntervalSeconds>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>stop-jetty</id>
+                      <phase>post-integration-test</phase>
+                      <goals>
+                          <goal>stop</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+  </build>
 </project>

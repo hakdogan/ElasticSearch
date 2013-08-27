@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      template="/template.xhtml">
+    
+    <ui:define name="top">
+        <h1>Kodcu.Com Tutorial - ElasticSearch</h1>
+    </ui:define>
+    
+    <ui:define name="content">
+        
+        <div id="logo">
+            <img src="#{resource['img:elasticsearch.png']}"/>
+        </div>
+        
+        <h:form id="articleForm">
+            <p:growl id="growl" showDetail="true"/>
+            <h:panelGrid columns="2" cellpadding="2" cellspacing="2">
+                <p:panel styleClass="registrationForm" header="Registration Form">
+
+                    <h:panelGrid id="registrationPanelGrid" columns="2" cellpadding="2" cellspacing="2">
+                        
+                        <h:outputLabel value="Title"/>
+                        <p:inputText value="#{elasticSearchBean.article.title}" required="#{param['saveArticle']=='true'}"
+                                     requiredMessage="The title field is required." styleClass="inputTextWidth"/>
+
+                        <h:outputLabel value="Content"/>
+                        <p:inputTextarea value="#{elasticSearchBean.article.content}" required="#{param['saveArticle']=='true'}"
+                                         requiredMessage="The content field is required." styleClass="inputTextAreaWidthHeight"/>
+
+                        <h:outputLabel value="Date"/>
+                        <p:calendar value="#{elasticSearchBean.article.postDate}" required="#{param['saveArticle']=='true'}"
+                                    requiredMessage="The date field is required." pattern="yyyy-MM-dd"
+                                    converterMessage="Is not a valid date" styleClass="calendarWidth"  />
+
+                        <h:outputLabel value="Author"/>
+                        <p:inputText value="#{elasticSearchBean.article.author}" required="#{param['saveArticle']=='true'}"
+                                     requiredMessage="The author field is required." styleClass="inputTextWidth"/>
+
+                        <h:outputLabel value="Tags"/>
+                        <p:inputText value="#{elasticSearchBean.tag}" styleClass="inputTextWidth" />
+                        <h:outputLabel/>
+                        <h:outputLabel value="separate tags with commas" styleClass="infoLabel"/>
+
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:panel header="Article Directory" styleClass="articleDirectory">
+                    <h:inputText id="wildCard" value="#{elasticSearchBean.wildCardQuery}" styleClass="queryText">
+                        <f:passThroughAttribute name="placeholder" value="Search..." />
+                        <f:ajax event="keyup" execute="wildCard" listener="#{elasticSearchBean.fullTextSearch}" render="articleTable" />
+                        <f:ajax event="blur" listener="#{elasticSearchBean.clearWildCardQuery}" render="@this" />
+                    </h:inputText>
+                    <p:dataTable id="articleTable" var="article" value="#{elasticSearchBean.articleList}"
+                                 selection="#{elasticSearchBean.selectArticle}" selectionMode="single"
+                                 paginator="true" paginatorPosition="bottom"
+                                 rowKey="#{article.id}" rows="5">
+                        
+                        <p:ajax event="rowSelect" listener="#{elasticSearchBean.articleSelect}"
+                                update=":articleForm:registrationPanelGrid :articleForm:removeArticle"/>
+
+                        <p:column width="200">
+                            <f:facet name="header">
+                                <h:outputLabel value="Title"/>
+                            </f:facet>
+                            <h:outputLabel value="#{article.title}"/>
+                        </p:column>
+
+                        <p:column width="350">
+                            <f:facet name="header">
+                                <h:outputLabel value="Content"/>
+                            </f:facet>
+                            <h:outputLabel value="#{article.content}"/>
+                        </p:column>
+                        
+                        <p:column width="200">
+                            <f:facet name="header">
+                                <h:outputLabel value="Author"/>
+                            </f:facet>
+                            <h:outputLabel value="#{article.author}"/>
+                        </p:column>
+                        
+                        <p:column width="40">
+                            <f:facet name="header">
+                                <h:outputLabel value="Date"/>
+                            </f:facet>
+                            <h:outputLabel value="#{article.postDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:commandButton action="#{elasticSearchBean.prepareDocumentList}" value="Get all documents"
+                                     styleClass="allDocumentsButton" update="wildCard articleTable"/>
+                </p:panel>
+                
+                <h:panelGroup>
+                    <p:commandButton id="newArticle" action="#{elasticSearchBean.initArticle}" value="New"
+                                     update="registrationPanelGrid articleTable removeArticle"/>
+                    <p:commandButton id="saveArticle" action="#{elasticSearchBean.saveArticle}" value="Save"
+                                     update="registrationPanelGrid articleTable growl">
+                        <f:param name="saveArticle" value="true"/>
+                    </p:commandButton>
+                    <p:commandButton id="removeArticle" disabled="#{null == elasticSearchBean.selectArticle}" action="#{elasticSearchBean.removeArticle}"
+                                     value="Remove" update="registrationPanelGrid articleTable @this"/>
+                </h:panelGroup>
+            </h:panelGrid>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>
