@@ -5,7 +5,6 @@ Refer to blog post for details:
 <dl>
 <dt>English</dt>
 <dd>- Has not been translated yet</dd>
-<dd>- <a href="http://en.kodcu.com/2013/08/nosql-with-jpa/">NoSQL with JPA</a></dd>
 <dt>Turkish</dt>
 <dd>- <a href="http://kodcu.com/2013/08/elasticsearch/">ElasticSearch</a></dd>
 <dd>- <a href="http://kodcu.com/2013/08/cekirdek-elasticsearch-islemleri/">Çekirdek ElasticSearch İşlemleri</a></dd>
