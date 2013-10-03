@@ -7,7 +7,7 @@ Refer to blog post for details:
 <dd>- <a href="http://en.kodcu.com/2013/09/elasticsearch-java-api-2/">Introduction to ElasticSearch</a></dd>
 <dd>- <a href="http://en.kodcu.com/2013/09/english-the-core-elasticsearch-operations/">The Core ElasticSearch Operations</a></dd>
 <dd>- <a href="http://en.kodcu.com/2013/09/elasticsearch-java-api-2/">ElasticSearch: Java API</a></dd>
-<dd>- <a href="http://en.kodcu.com/2013/10/java-web-application-and-elasticsearch-video/">ElasticSearch: Java API</a></dd>
+<dd>- <a href="http://en.kodcu.com/2013/10/java-web-application-and-elasticsearch-video/">Java Web Application and ElasticSearch (Video)</a></dd>
 <dt>Turkish</dt>
 <dd>- <a href="http://kodcu.com/2013/08/elasticsearch/">ElasticSearch</a></dd>
 <dd>- <a href="http://kodcu.com/2013/08/cekirdek-elasticsearch-islemleri/">Çekirdek ElasticSearch İşlemleri</a></dd>
