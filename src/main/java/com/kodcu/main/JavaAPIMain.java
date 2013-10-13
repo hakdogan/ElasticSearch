@@ -23,31 +23,33 @@ import org.elasticsearch.search.SearchHit;
 public class JavaAPIMain {
     
     public static void main(String args[]) throws IOException{
-        
-        
+
         Node node     = nodeBuilder().node();
         Client client = node.client();
         
         client.prepareIndex("kodcucom", "article", "1")
-              .setSource(putJsonDocument("ElasticSearch: Java API",
-                                         "ElasticSearch provides the Java API, all operations "
-                                         + "can be executed asynchronously using a client object.",
+              .setSource(putJsonDocument("ElasticSearch: Java",
+                                         "ElasticSeach provides Java API, thus it executes all operations " +
+                                          "asynchronously by using client object..",
                                          new Date(),
                                          new String[]{"elasticsearch"},
                                          "Hüseyin Akdoğan")).execute().actionGet();
         
         client.prepareIndex("kodcucom", "article", "2")
-              .setSource(putJsonDocument("API ElasticSearch: TIRISKA",
-                                         "ElasticSearch provides the Java API, all operations "
-                                         + "can be executed asynchronously using a client object.",
+              .setSource(putJsonDocument("Java Web Application and ElasticSearch (Video)",
+                                         "Today, here I am for exemplifying the usage of ElasticSearch which is an open source, distributed " +
+                                         "and scalable full text search engine and a data analysis tool in a Java web application.",
                                          new Date(),
                                          new String[]{"elasticsearch"},
                                          "Hüseyin Akdoğan")).execute().actionGet();
         
         getDocument(client, "kodcucom", "article", "1");
-        
-        updateDocument(client, "kodcucom", "article", "1", "tags", "big-data");
-        
+
+        updateDocument(client, "kodcucom", "article", "1", "title", "ElasticSearch: Java API");
+        updateDocument(client, "kodcucom", "article", "1", "tags", new String[]{"bigdata"});
+
+        getDocument(client, "kodcucom", "article", "1");
+
         searchDocument(client, "kodcucom", "article", "title", "ElasticSearch");
         
         deleteDocument(client, "kodcucom", "article", "1");
@@ -61,7 +63,7 @@ public class JavaAPIMain {
         Map<String, Object> jsonDocument = new HashMap<String, Object>();
         
         jsonDocument.put("title", title);
-        jsonDocument.put("conten", content);
+        jsonDocument.put("content", content);
         jsonDocument.put("postDate", postDate);
         jsonDocument.put("tags", tags);
         jsonDocument.put("author", author);
@@ -96,7 +98,24 @@ public class JavaAPIMain {
               .setScript("ctx._source." + field + "=" + field)
               .setScriptParams(updateObject).execute().actionGet();
     }
-    
+
+    public static void updateDocument(Client client, String index, String type,
+                                      String id, String field, String[] newValue){
+
+        String tags = "";
+        for(String tag :newValue)
+            tags += tag + ", ";
+
+        tags = tags.substring(0, tags.length() - 2);
+
+        Map<String, Object> updateObject = new HashMap<String, Object>();
+        updateObject.put(field, tags);
+
+        client.prepareUpdate(index, type, id)
+                .setScript("ctx._source." + field + "+=" + field)
+                .setScriptParams(updateObject).execute().actionGet();
+    }
+
     public static void searchDocument(Client client, String index, String type,
                                       String field, String value){
         

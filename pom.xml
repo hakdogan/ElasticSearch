@@ -12,7 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <elastic.version>0.90.3</elastic.version>
+    <elastic.version>0.90.5</elastic.version>
     <jsf.version>2.2.2</jsf.version>
     <primeFaces.version>3.5</primeFaces.version>
     <primeFacesTheme.version>1.0.10</primeFacesTheme.version>
