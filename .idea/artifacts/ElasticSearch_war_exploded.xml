@@ -29,6 +29,7 @@
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spatial:4.4.0" />
           <element id="library" level="project" name="Maven: com.spatial4j:spatial4j:0.3" />
           <element id="library" level="project" name="Maven: jboss:jboss-j2ee:4.2.2.GA" />
+          <element id="library" level="project" name="Maven: org.apache.myfaces.core:myfaces-api:2.0.2" />
         </element>
       </element>
     </root>
