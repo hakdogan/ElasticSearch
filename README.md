@@ -14,7 +14,7 @@ mvn jetty:run
 
 ## How to run with Docker?
 ```
-docker run -d --name elasticsearch -p 8080:8080 elasticsearch:oldVersion
+docker run -d --name elasticsearch -p 8080:8080 hakdogan/elasticsearch:oldVersion
 ```
 
 [![Java Web Applications(JSF 2.2) and ElasticSearch](https://img.youtube.com/vi/O16KK1xae5Y/0.jpg)](https://www.youtube.com/watch?v=O16KK1xae5Y)
