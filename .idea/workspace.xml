@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9cb22ba-e07f-49d6-8dfb-a689bdc34c37" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
+    <list default="true" id="2c913d1d-d1eb-46c5-9e44-672b9c80fb79" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/ElasticSearch_war.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/ElasticSearch_war_exploded.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_spatial4j_spatial4j_0_3.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_2.xml" afterPath="" />
@@ -33,11 +30,8 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_primefaces_themes_bootstrap_1_0_10.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ElasticSearch.iml" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -82,8 +76,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -91,17 +86,11 @@
               <item name="ElasticSearch" type="b2602c69:ProjectViewProjectNode" />
               <item name="ElasticSearch" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ElasticSearch" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ElasticSearch" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -213,17 +202,17 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f9cb22ba-e07f-49d6-8dfb-a689bdc34c37" name="Default" comment="" />
-      <created>1511788730938</created>
+      <changelist id="2c913d1d-d1eb-46c5-9e44-672b9c80fb79" name="Default" comment="" />
+      <created>1511789117284</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1511788730938</updated>
-      <workItem from="1511788735879" duration="131000" />
+      <updated>1511789117284</updated>
+      <workItem from="1511789118758" duration="57000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131000" />
+    <option name="totallyTimeSpent" value="57000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1023" extended-state="0" />
