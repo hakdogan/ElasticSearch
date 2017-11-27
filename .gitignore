@@ -1,2 +1,6 @@
-/target/
-/data/
+.DS_Store
+.idea/
+*.iml
+*.war
+*.jar
+target/
