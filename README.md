@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/hakdogan/ElasticSearch.svg?branch=master)](https://travis-ci.org/hakdogan/ElasticSearch)
+[![Build Status](https://travis-ci.org/hakdogan/ElasticSearch.svg?branch=oldVersion)](https://travis-ci.org/hakdogan/ElasticSearch)
 !["Docker Pulls](https://img.shields.io/docker/pulls/hakdogan/elasticsearch.svg)
 [![Analytics](https://ga-beacon.appspot.com/UA-110069051-1/pipeline/readme)](https://github.com/igrigorik/ga-beacon)
 
