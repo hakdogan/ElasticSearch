@@ -1,0 +1,13 @@
+version: '3.2'
+services:
+  eleasticserver:
+    image: elasticsearch:latest
+    container_name: eleasticserver
+  eleasticclient:
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    container_name: eleasticclient
+    depends_on:
+      - eleasticserver

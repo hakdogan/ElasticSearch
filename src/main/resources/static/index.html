@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <title>ElasticSearch Java API Tutorial!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body style="padding-left: 10px !important; padding-right: 10px !important;">
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ElasticSearch Java High Level REST Client Tutorial</a>
+    <form class="form-inline">
+        <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+<div class="jumbotron">
+<form>
+    <div class="form-group row">
+        <label for="firstName" class="col-sm-2 col-form-label">First name</label>
+        <div class="col-sm-10">
+            <input id="firstName" type="text" class="form-control" placeholder="First name" required/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="lastName" class="col-sm-2 col-form-label">Last name</label>
+        <div class="col-sm-10">
+            <input id="lastName" type="text" class="form-control" placeholder="Last name" required/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="message" class="col-sm-2 col-form-label">Message</label>
+        <div class="col-sm-10">
+            <textarea id="message" class="form-control" rows="3" placeholder="Message" required></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button id="save" class="btn btn-info">Save</button>
+            <button type="reset" class="btn btn-light">Clear</button>
+        </div>
+    </div>
+</form>
+</div>
+<table id="myTable" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Message</th>
+            <th scope="col">---</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/functions.js"></script>
+</body>
+</html>

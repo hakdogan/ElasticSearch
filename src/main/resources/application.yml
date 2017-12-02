@@ -1,0 +1,11 @@
+app:
+  restclient:
+    hostname: localhost
+    scheme: http
+    port: 9200
+  index:
+    name: kodcu
+    type: tutorial
+    from: 0
+    size: 5
+    timeout: 60

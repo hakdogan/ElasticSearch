@@ -1,13 +1,17 @@
 FROM maven:3-alpine
 
-COPY pom.xml ES/
+LABEL maintainer = "Hüseyin Akdoğan <huseyin.akdogan@kodcu.com>"
 
-COPY src/ ES/src/
+VOLUME /var/log
 
-WORKDIR ES/
+COPY pom.xml ElasticSearch/
 
-RUN mvn clean install
+COPY src/ ElasticSearch/src/
+
+WORKDIR ElasticSearch/
+
+RUN mvn clean install -Dmaven.test.skip=true
 
 EXPOSE 8080
 
-CMD ["mvn","jetty:run"]
+CMD ["sh","-c", "java -Dnetworkaddress.cache.ttl=60 -jar /ElasticSearch/target/ElasticSearch.jar"]

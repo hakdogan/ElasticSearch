@@ -3,4 +3,5 @@
 *.iml
 *.war
 *.jar
+log/
 target/
