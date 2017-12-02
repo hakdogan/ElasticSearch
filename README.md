@@ -5,7 +5,7 @@
 Illustration and demonstration use of ElasticSearch
 ===================================================
 
-This branch illustrates and demonstrates use of ElasticSearch Java API with standalone Java application and Java web application(JSF2.2)
+This branch illustrates and demonstrates use of ElasticSearch Java API with standalone Java application and Java web application(JSF2.2). This sample belongs to a rather old version of ElasticSearch belongs. If you want to see the sample of the new version, please visit to [master](https://github.com/hakdogan/ElasticSearch/tree/master) branch.
 
 ## How to run?
 ```
