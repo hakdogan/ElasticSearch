@@ -32,6 +32,7 @@ function clearFields() {
     $("#firstName").val('');
     $("#lastName").val('');
     $("#message").val('');
+    $("#query").val('');
 }
 
 $(document).ready(function() {

@@ -1,7 +1,14 @@
 language: java
 jdk:
 - oraclejdk8
-script: mvn clean install -Dmaven.test.skip=true
+sudo: true
+script: mvn clean install
+
+before_script:
+  - sudo sysctl -w vm.max_map_count=262144
+
+after_success:
+- mvn clean cobertura:cobertura coveralls:report
 
 deploy:
   provider: releases

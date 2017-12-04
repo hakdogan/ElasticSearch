@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-mvn clean install -Dmaven.test.skip=true
+mvn clean install
 docker-compose -f docker-compose.yml up --build
