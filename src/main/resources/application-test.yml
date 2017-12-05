@@ -1,3 +1,7 @@
 app:
+  restclient:
+    hostname: 13.57.14.121
+    scheme: http
+    port: 9200
   index:
     name: test
