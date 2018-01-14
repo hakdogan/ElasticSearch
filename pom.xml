@@ -71,12 +71,6 @@
       </dependency>
 
       <dependency>
-          <groupId>org.apache.lucene</groupId>
-          <artifactId>lucene-test-framework</artifactId>
-          <version>${lucene.version}</version>
-          <scope>test</scope>
-      </dependency>
-      <dependency>
           <groupId>org.elasticsearch.test</groupId>
           <artifactId>framework</artifactId>
           <version>${elastic.version}</version>
@@ -152,7 +146,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
                 <configuration>
-                    <repoToken>${env.COVERALLS_TOKEN}</repoToken>
+                    <repoToken>TOKENdVr0sWHnP4ahwF8WpwFQDAbHtDCfwzPyv</repoToken>
                 </configuration>
             </plugin>
             <plugin>

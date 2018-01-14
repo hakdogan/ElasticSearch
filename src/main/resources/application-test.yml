@@ -1,5 +1,7 @@
 app:
   restclient:
-    hostname: 13.57.14.121 #you must provide your instance address
+    hostname: https://nnhlhyh6jv:lxu68han2g@first-cluster-863653694.us-east-1.bonsaisearch.net
+    port: 80
   index:
-    name: test
+    name: yap
+    type: dene

@@ -12,21 +12,21 @@ This repository illustrates and demonstrates the use of ElasticSearch Java API w
 The client added in version 6.0.0-beta1 and it works on top of the Java low level rest client.
 
 ### Initialization
-```
+```java
 RetHighLevelClient(RestClient.builder(new HttpHost(props.getRestClient().getHostname(),
                 props.getRestClient().getPort(), props.getRestClient().getScheme())));
 ```
 
 
 ### Creating an index
-```
+```java
 IndexRequest request = new IndexRequest(props.getIndex().getName(), props.getIndex().getType());
 request.source(gson.toJson(document), XContentType.JSON);
 IndexResponse response = client.index(request);
 ```
 
 ### Using SearchSourceBuilder and showing search results
-```
+```java
 sourceBuilder.query(builder);
 SearchRequest searchRequest = getSearchRequest();
 
@@ -41,7 +41,7 @@ for (SearchHit hit : searchHits) {
 ```
 
 ### Using wildcard query
-```
+```java
 QueryBuilders.wildcardQuery("_all", "*" + query.toLowerCase() + "*")
 ```
 
