@@ -1,7 +1,3 @@
 app:
-  restclient:
-    hostname: https://nnhlhyh6jv:lxu68han2g@first-cluster-863653694.us-east-1.bonsaisearch.net
-    port: 80
   index:
-    name: yap
-    type: dene
+    name: kodcu_test
