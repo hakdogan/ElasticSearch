@@ -55,7 +55,7 @@ public class QueryDAO {
             IndexResponse response = client.index(request);
             return response.getId();
         } catch (Exception ex) {
-            log.error("The exception was thrown in createIndex method." + ex);
+            log.error("The exception was thrown in createIndex method. {} ", ex);
         }
 
         return null;
@@ -72,7 +72,7 @@ public class QueryDAO {
         try {
             result = getDocuments(QueryBuilders.matchAllQuery());
         } catch (Exception ex){
-            log.error("The exception was thrown in matchAllQuery method." + ex);
+            log.error("The exception was thrown in matchAllQuery method. {} ", ex);
         }
 
         return result;
@@ -90,7 +90,7 @@ public class QueryDAO {
         try {
             result = getDocuments(QueryBuilders.wildcardQuery("_all", "*" + query.toLowerCase() + "*"));
         } catch (Exception ex){
-            log.error("The exception was thrown in wildcardQuery method." + ex);
+            log.error("The exception was thrown in wildcardQuery method. {} ", ex);
         }
 
         return result;
@@ -106,7 +106,7 @@ public class QueryDAO {
             DeleteRequest deleteRequest = new DeleteRequest(props.getIndex().getName(), props.getIndex().getType(), id);
             client.delete(deleteRequest);
         } catch (Exception ex){
-            log.error("The exception was thrown in deleteDocument method." + ex);
+            log.error("The exception was thrown in deleteDocument method. {} ", ex);
         }
     }
 

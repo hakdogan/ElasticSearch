@@ -1,22 +1,17 @@
 language: java
+
 jdk:
 - oraclejdk8
+
 sudo: true
 
 services:
   - docker
 
-before_install:
-  - docker pull library/elasticsearch
-  - docker run -d --name elas --rm -p 9200:9200 -p 9300:9300 elasticsearch
-
 script: mvn clean install
 
 after_success:
 - mvn clean cobertura:cobertura coveralls:report
-
-after_install:
-  - docker stop elas
 
 deploy:
   provider: releases
