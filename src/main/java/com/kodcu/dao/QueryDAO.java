@@ -12,6 +12,8 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.AbstractQueryBuilder;
@@ -30,17 +32,18 @@ import java.util.List;
 @Slf4j
 public class QueryDAO {
 
-    @Autowired
-    private RestHighLevelClient client;
+    private final RestHighLevelClient client;
+    private final SearchSourceBuilder sourceBuilder;
+    private final ConfigProps props;
+    private final Gson gson;
 
     @Autowired
-    private SearchSourceBuilder sourceBuilder;
-
-    @Autowired
-    private ConfigProps props;
-
-    @Autowired
-    private Gson gson;
+    public QueryDAO(RestHighLevelClient client, SearchSourceBuilder sourceBuilder, ConfigProps props, Gson gson){
+        this.client = client;
+        this.sourceBuilder = sourceBuilder;
+        this.props = props;
+        this.gson = gson;
+    }
 
     /**
      *
@@ -63,13 +66,35 @@ public class QueryDAO {
 
     /**
      *
+     * @param document
      * @return
      */
-    public List<Document> matchAllQuery(){
+    public String updateDocument(Document document){
+
+        try {
+            UpdateRequest request = new UpdateRequest(props.getIndex().getName(),
+                    props.getIndex().getType(), document.getId())
+                    .doc(gson.toJson(document), XContentType.JSON);
+
+            UpdateResponse response = client.update(request);
+            return response.getId();
+        } catch (Exception ex){
+            log.error("The exception was thrown in updateDocument method. {} ", ex);
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Document> matchAllQuery() {
 
         List<Document> result = new ArrayList<>();
 
         try {
+            flush();
             result = getDocuments(QueryBuilders.matchAllQuery());
         } catch (Exception ex){
             log.error("The exception was thrown in matchAllQuery method. {} ", ex);
@@ -142,5 +167,10 @@ public class QueryDAO {
         }
 
         return result;
+    }
+
+    public void flush() throws IOException {
+        String endPoint = String.join("/", props.getIndex().getName(), "_flush");
+        client.getLowLevelClient().performRequest("POST", endPoint);
     }
 }

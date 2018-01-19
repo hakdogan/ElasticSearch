@@ -9,10 +9,12 @@ function fillTable(){
 
             for (i = 0; i <= result.length - 1; i++) {
                 var obj = result[i];
-                $('#myTable > tbody:last').after('<tr><td>' + obj.firstname + '</td>'
+                $('#myTableBody').append('<tr><td>' + obj.firstname + '</td>'
                     + '<td>' + obj.lastname + '</td>'
                     + '<td>' + obj.message + '</td>'
-                    + '<td><button type=\'button\' onclick=deleteDocument(\'' + obj.id + '\') class=\'btn btn-danger\'>Delete</button></td>');
+                    + '<td><button type=\'button\' onclick=\"fillFields(\'' + obj.id + '\', \'' + obj.firstname + '\', \''
+                    + obj.lastname + '\', \'' + obj.message + '\')\" class=\'btn btn-light\'>Update</button>'
+                    + ' | <button type=\'button\' onclick=deleteDocument(\'' + obj.id + '\') class=\'btn btn-danger\'>Delete</button></td>');
             };
         },
         error: function(err) {
@@ -28,7 +30,15 @@ function deleteDocument(id) {
     $(fillTable());
 }
 
+function fillFields(id, firstname, lastname, message) {
+    $("#docId").val(id);
+    $("#firstName").val(firstname);
+    $("#lastName").val(lastname);
+    $("#message").val(message);
+}
+
 function clearFields() {
+    $("#docId").val('');
     $("#firstName").val('');
     $("#lastName").val('');
     $("#message").val('');
@@ -47,7 +57,9 @@ $(document).ready(function() {
                 $('#myTable > tbody:last').after('<tr><td>' + obj.firstname + '</td>'
                     + '<td>' + obj.lastname + '</td>'
                     + '<td>' + obj.message + '</td>'
-                    + '<td><button type=\'button\' onclick=deleteDocument(\'' + obj.id + '\') class=\'btn btn-danger\'>Delete</button></td></tr>');
+                    + '<td><button type=\'button\' onclick=\"fillFields(\'' + obj.id + '\', \'' + obj.firstname + '\', \''
+                    + obj.lastname + '\', \'' + obj.message + '\')\" class=\'btn btn-light\'>Update</button>'
+                    + ' | <button type=\'button\' onclick=deleteDocument(\'' + obj.id + '\') class=\'btn btn-danger\'>Delete</button></td></tr>');
             };
         });
     });
@@ -55,8 +67,11 @@ $(document).ready(function() {
     $("#save").click(function(){
         event.preventDefault();
 
+
+        var id = '' === $("#docId").val()?null:$("#docId").val();
+        var url = null === id?'/api/create':'/api/update';
         var document = {
-            id: null,
+            id: id,
             firstname: $("#firstName").val(),
             lastname: $("#lastName").val(),
             message: $("#message").val()
@@ -64,16 +79,12 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: "/api/create",
+            url: url,
             data: JSON.stringify(document),
             contentType: "application/json; charset=utf-8",
-            success: function (id) {
-                $('#myTable > tbody:last').after('<tr><td>' + $("#firstName").val() + '</td>'
-                    + '<td>' + $("#lastName").val() + '</td>'
-                    + '<td>' + $("#message").val() + '</td>'
-                    + '<td><button type=\'button\' onclick=deleteDocument(\'' + id + '\') class=\'btn btn-danger\'>Delete</button></td></tr>');
-
+            success: function () {
                 $(clearFields());
+                $(fillTable());
             },
             error: function(err) {
                 console.log("AJAX error in request: " + JSON.stringify(err, null, 2));

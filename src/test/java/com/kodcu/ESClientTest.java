@@ -7,7 +7,6 @@ import com.kodcu.dao.QueryDAO;
 import com.kodcu.entity.Document;
 import com.kodcu.prop.ConfigProps;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +31,6 @@ import static org.junit.Assert.assertTrue;
 public class ESClientTest {
 
     @Autowired
-    private RestHighLevelClient client;
-
-    @Autowired
     private ConfigProps props;
 
     @Autowired
@@ -45,14 +41,14 @@ public class ESClientTest {
     @Test
     public void testA() throws IOException {
         assertNotNull(dao.createIndex(doc));
-        flush();
+        dao.flush();
     }
 
     @Test
     public void testD() throws IOException {
         List<Document> documentList = dao.wildcardQuery("akd");
         documentList.forEach(doc -> dao.deleteDocument(doc.getId()));
-        flush();
+        dao.flush();
         assertTrue(dao.matchAllQuery().isEmpty());
     }
 
@@ -66,8 +62,4 @@ public class ESClientTest {
         assertFalse(dao.wildcardQuery("akd").isEmpty());
     }
 
-    private void flush() throws IOException {
-        String endPoint = String.join("/", props.getIndex().getName(), "_flush");
-        client.getLowLevelClient().performRequest("POST", endPoint);
-    }
 }

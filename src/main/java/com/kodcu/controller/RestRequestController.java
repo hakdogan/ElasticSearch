@@ -26,6 +26,15 @@ public class RestRequestController {
         return dao.createIndex(document);
     }
 
+    @PostMapping(value = "/api/update", consumes = "application/json; charset=utf-8")
+    public String update(@RequestBody Document document){
+        return dao.updateDocument(document);
+    }
+
+    /**
+     *
+     * @param id
+     */
     @GetMapping(value = "/api/delete")
     public void delete(String id){
         dao.deleteDocument(id);

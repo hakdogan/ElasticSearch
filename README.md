@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/hakdogan/ElasticSearch.svg?branch=master)](https://travis-ci.org/hakdogan/ElasticSearch)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0da01a34f91c4120aafbef85506b08d9)](https://www.codacy.com/app/hakdogan/ElasticSearch?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hakdogan/ElasticSearch&amp;utm_campaign=Badge_Grade)
 !["Docker Pulls](https://img.shields.io/docker/pulls/hakdogan/elasticsearch.svg)
 [![Coverage Status](https://coveralls.io/repos/github/hakdogan/ElasticSearch/badge.svg?branch=master)](https://coveralls.io/github/hakdogan/ElasticSearch?branch=master)
 [![Analytics](https://ga-beacon.appspot.com/UA-110069051-1/ElasticSearch/readme)](https://github.com/igrigorik/ga-beacon)

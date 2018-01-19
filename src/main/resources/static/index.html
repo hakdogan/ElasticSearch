@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<html lang="en">
 <head>
     <title>ElasticSearch Java API Tutorial!</title>
     <!-- Required meta tags -->
@@ -19,6 +19,7 @@
 </nav>
 <div class="jumbotron">
 <form>
+    <input type="hidden" id="docId"/>
     <div class="form-group row">
         <label for="firstName" class="col-sm-2 col-form-label">First name</label>
         <div class="col-sm-10">
@@ -54,11 +55,10 @@
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Message</th>
-            <th scope="col">---</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody id="myTableBody"></tbody>
 </table>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
