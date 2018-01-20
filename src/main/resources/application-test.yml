@@ -1,3 +1,5 @@
 app:
+  restclient:
+    port: 9250
   index:
     name: kodcu_test

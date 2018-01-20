@@ -177,8 +177,8 @@
                             <alias>es</alias>
                             <run>
                                 <ports>
-                                    <port>9200:9200</port>
-                                    <port>9300:9300</port>
+                                    <port>9250:9200</port>
+                                    <port>9350:9300</port>
                                 </ports>
                                 <wait>
                                     <time>25000</time>
