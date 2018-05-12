@@ -38,7 +38,8 @@ public class QueryDAO {
     private final Gson gson;
 
     @Autowired
-    public QueryDAO(RestHighLevelClient client, SearchSourceBuilder sourceBuilder, ConfigProps props, Gson gson){
+    public QueryDAO(RestHighLevelClient client, SearchSourceBuilder sourceBuilder,
+                    ConfigProps props, Gson gson){
         this.client = client;
         this.sourceBuilder = sourceBuilder;
         this.props = props;
@@ -113,7 +114,7 @@ public class QueryDAO {
         List<Document> result = new ArrayList<>();
 
         try {
-            result = getDocuments(QueryBuilders.wildcardQuery("_all", "*" + query.toLowerCase() + "*"));
+            result = getDocuments(QueryBuilders.queryStringQuery("*" + query.toLowerCase() + "*"));
         } catch (Exception ex){
             log.error("The exception was thrown in wildcardQuery method. {} ", ex);
         }

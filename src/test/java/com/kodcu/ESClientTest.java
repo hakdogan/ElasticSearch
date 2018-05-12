@@ -5,7 +5,6 @@ package com.kodcu;
 
 import com.kodcu.dao.QueryDAO;
 import com.kodcu.entity.Document;
-import com.kodcu.prop.ConfigProps;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -31,9 +30,6 @@ import static org.junit.Assert.assertTrue;
 public class ESClientTest {
 
     @Autowired
-    private ConfigProps props;
-
-    @Autowired
     private QueryDAO dao;
 
     private Document doc = new Document(null, "Hüseyin", "Akdoğan", "Hello!");
@@ -45,21 +41,15 @@ public class ESClientTest {
     }
 
     @Test
-    public void testD() throws IOException {
-        List<Document> documentList = dao.wildcardQuery("akd");
-        documentList.forEach(doc -> dao.deleteDocument(doc.getId()));
-        dao.flush();
-        assertTrue(dao.matchAllQuery().isEmpty());
-    }
-
-    @Test
     public void testB(){
         assertFalse(dao.matchAllQuery().isEmpty());
     }
 
     @Test
-    public void testC(){
-        assertFalse(dao.wildcardQuery("akd").isEmpty());
+    public void testc() throws IOException {
+        List<Document> documentList = dao.matchAllQuery();
+        documentList.forEach(doc -> dao.deleteDocument(doc.getId()));
+        dao.flush();
+        assertTrue(dao.matchAllQuery().isEmpty());
     }
-
 }

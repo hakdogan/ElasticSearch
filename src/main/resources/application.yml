@@ -1,11 +1,17 @@
 app:
-  restclient:
+  clients:
     hostname: localhost
     scheme: http
-    port: 9200
+    httpPort: 9200
+    transportPort: 9300
   index:
     name: kodcu
     type: tutorial
+    shard: 2
+    replica: 1
     from: 0
     size: 5
     timeout: 60
+spring:
+  profiles:
+    active: production

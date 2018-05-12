@@ -8,10 +8,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RestClient {
+public class Clients {
 
     private String hostname;
     private String scheme;
-    private int port;
+    private int httpPort;
+    private int transportPort;
 
 }

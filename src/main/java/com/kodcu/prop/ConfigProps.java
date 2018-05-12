@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class ConfigProps {
 
     @NestedConfigurationProperty
-    private RestClient restClient = new RestClient();
+    private Clients clients = new Clients();
 
     @NestedConfigurationProperty
     private Index index = new Index();

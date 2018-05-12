@@ -7,19 +7,81 @@
 Illustration and demonstration use of ElasticSearch
 ===================================================
 
-This repository illustrates and demonstrates the use of ElasticSearch Java API with most up to date version of ElasticSearch which provides _Java High Level REST Client_. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
+This repository illustrates and demonstrates the use of ElasticSearch Java API via `Transport Client` and `Java High Level REST Client`. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
 
-## How to Use Java High Level REST Client in the backend?
-The client added in version 6.0.0-beta1 and it works on top of the Java low level rest client.
+## What You will learn in this repository?
 
-### Initialization
+* How to use Transport Client
+  * How to perform Administration operations
+  * Index creation
+  * Mapping settings
+* How to use Java High Level REST Client
+  * How to perform CRUD operations
+
+### Initialization Transport Client
 ```java
-RetHighLevelClient(RestClient.builder(new HttpHost(props.getRestClient().getHostname(),
-                props.getRestClient().getPort(), props.getRestClient().getScheme())));
+    @Bean(destroyMethod = "close")
+    public TransportClient getTransportClient() throws UnknownHostException {
+        try (TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
+                .addTransportAddress(new TransportAddress(InetAddress.getByName(props.getClients().getHostname()),
+                        props.getClients().getTransportPort()))){
+            return client;
+        }
+    }
 ```
 
+### Initialization Java High Level REST Client
+```java
+    @Bean(destroyMethod = "close")
+    public RestHighLevelClient getRestClient() {
+        return new RestHighLevelClient(RestClient.builder(new HttpHost(props.getClients().getHostname(),
+                props.getClients().getHttpPort(), props.getClients().getScheme())));
+    }
+```
 
-### Creating an index
+### Index creation with Transport Client
+```java
+IndicesExistsRequest request = new IndicesExistsRequest(props.getIndex().getName());
+IndicesExistsResponse indicesExistsResponse = indicesAdminClient.exists(request).actionGet();
+```
+
+### Shard and Replica Settings
+```java
+indicesAdminClient.prepareCreate(props.getIndex().getName())
+    .setSettings(Settings.builder()
+        .put("index.number_of_shards", props.getIndex().getShard())
+        .put("index.number_of_replicas", props.getIndex().getReplica()))
+    .get();
+```
+
+### Mapping Settings
+```java
+    XContentBuilder builder = jsonBuilder()
+        .startObject()
+            .startObject(props.getIndex().getType())
+                .startObject("properties")
+                    .startObject("id")
+                        .field("type", "text")
+                    .endObject()
+                    .startObject("firstname")
+                        .field("type", "text")
+                    .endObject()
+                    .startObject("lastname")
+                        .field("type", "text")
+                    .endObject()
+                    .startObject("message")
+                        .field("type", "text")
+                    .endObject()
+                .endObject()
+            .endObject()
+        .endObject();
+        
+    indicesAdminClient.preparePutMapping(props.getIndex().getName())
+        .setType(props.getIndex().getType())
+        .setSource(builder.string(), XContentType.JSON).get();
+```
+
+### Index creation with Java High Level REST Client
 ```java
 IndexRequest request = new IndexRequest(props.getIndex().getName(), props.getIndex().getType());
 request.source(gson.toJson(document), XContentType.JSON);
@@ -41,12 +103,12 @@ for (SearchHit hit : searchHits) {
 }
 ```
 
-### Using wildcard query
+### Using Query String with Wildcard
 ```java
-QueryBuilders.wildcardQuery("_all", "*" + query.toLowerCase() + "*")
+result = getDocuments(QueryBuilders.queryStringQuery("*" + query.toLowerCase() + "*"));
 ```
 
-### Deleting a document
+### Document deletion
 ```
 DeleteRequest deleteRequest = new DeleteRequest(props.getIndex().getName(), props.getIndex().getType(), id);
 ```
