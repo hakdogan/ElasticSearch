@@ -124,22 +124,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <excludes>
-                                <exclude>none</exclude>
-                            </excludes>
-                            <includes>
-                                <include>**/*Test.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>cobertua</id>
+                        <id>coveralls-report</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
@@ -156,75 +141,31 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.23.0</version>
-                <extensions>true</extensions>
+                <groupId>com.github.alexcojocaru</groupId>
+                <artifactId>elasticsearch-maven-plugin</artifactId>
+                <version>6.0</version>
+                <configuration>
+                    <version>6.0.0</version>
+                    <clusterName>test</clusterName>
+                    <transportPort>9350</transportPort>
+                    <httpPort>9250</httpPort>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>default-start</id>
-                        <phase>pre-integration-test</phase>
+                        <id>start-elasticsearch</id>
+                        <phase>process-test-sources</phase>
                         <goals>
-                            <goal>start</goal>
+                            <goal>runforked</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>cobertura</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-process-test-resources</id>
+                        <id>stop-elasticsearch</id>
                         <phase>process-test-classes</phase>
                         <goals>
                             <goal>stop</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>default-build</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-remove</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>remove</goal>
-                        </goals>
-                        <configuration>
-                            <removeAll>true</removeAll>
-                        </configuration>
-                    </execution>
                 </executions>
-                <configuration>
-                    <showLogs>true</showLogs>
-                    <images>
-                        <image>
-                            <name>elasticsearch</name>
-                            <alias>es</alias>
-                            <run>
-                                <ports>
-                                    <port>9250:9200</port>
-                                    <port>9350:9300</port>
-                                </ports>
-                                <wait>
-                                    <time>25000</time>
-                                </wait>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>

@@ -9,7 +9,7 @@ Illustration and demonstration use of ElasticSearch
 
 This repository illustrates and demonstrates the use of ElasticSearch Java API via `Transport Client` and `Java High Level REST Client`. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
 
-## What You will learn in this repository?
+## What you will learn in this repository?
 
 * How to use Transport Client
   * How to perform Administration operations

@@ -32,12 +32,11 @@ public class Config {
 
     @Profile("production")
     @Bean(destroyMethod = "close")
+    @SuppressWarnings("all")
     public TransportClient getTransportClient() throws UnknownHostException {
-        try (TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
-                .addTransportAddress(new TransportAddress(InetAddress.getByName(props.getClients().getHostname()),
-                        props.getClients().getTransportPort()))){
-            return client;
-        }
+        return new PreBuiltTransportClient(Settings.EMPTY)
+                    .addTransportAddress(new TransportAddress(InetAddress.getByName(props.getClients().getHostname()),
+                            props.getClients().getTransportPort()));
     }
 
     @Bean(destroyMethod = "close")
