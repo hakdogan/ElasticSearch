@@ -6,7 +6,12 @@ package com.kodcu.config;
 
 import com.google.gson.Gson;
 import com.kodcu.prop.ConfigProps;
+import fr.pilato.elasticsearch.containers.ElasticsearchContainer;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
@@ -39,10 +44,25 @@ public class Config {
                             props.getClients().getTransportPort()));
     }
 
+    @Profile("production")
     @Bean(destroyMethod = "close")
     public RestHighLevelClient getRestClient() {
         return new RestHighLevelClient(RestClient.builder(new HttpHost(props.getClients().getHostname(),
                 props.getClients().getHttpPort(), props.getClients().getScheme())));
+    }
+
+    @Profile("test")
+    @Bean(destroyMethod = "close")
+    public RestHighLevelClient getRestClientForTest() {
+
+        ElasticsearchContainer container = new ElasticsearchContainer();
+        container.start();
+
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(props.getClients().getCredentialUsername(), props.getClients().getCredentialPassword()));
+        return new RestHighLevelClient(RestClient.builder(container.getHost())
+                .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
     }
 
     @Bean
@@ -59,4 +79,5 @@ public class Config {
     public Gson getGson(){
         return new Gson();
     }
+
 }

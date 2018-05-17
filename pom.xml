@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <elastic.version>6.2.4</elastic.version>
         <lucene.version>7.2.1</lucene.version>
+        <test.container.version>1.7.2</test.container.version>
         <gson.version>2.8.2</gson.version>
         <maven.jacoco.version>0.7.6.201602180812</maven.jacoco.version>
     </properties>
@@ -72,14 +73,16 @@
             <version>${elastic.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-test-framework</artifactId>
+            <version>${lucene.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.carrotsearch.randomizedtesting</groupId>
+                    <artifactId>randomizedtesting-runner</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.test</groupId>
@@ -94,16 +97,24 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-test-framework</artifactId>
-            <version>${lucene.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.carrotsearch.randomizedtesting</groupId>
-                    <artifactId>randomizedtesting-runner</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${test.container.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.pilato.elasticsearch.testcontainers</groupId>
+            <artifactId>testcontainers-elasticsearch</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
     </dependencies>
 
@@ -115,54 +126,33 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*Test.java</exclude>
-                    </excludes>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>coveralls-report</id>
+                        <id>add-test-source</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>add-test-source</goal>
                         </goals>
-                        <phase>process-test-classes</phase>
                         <configuration>
-                            <excludes>
-                                <exclude>none</exclude>
-                            </excludes>
-                            <includes>
-                                <include>**/*Test.java</include>
-                            </includes>
+                            <sources>
+                                <source>src/it/java</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.github.alexcojocaru</groupId>
-                <artifactId>elasticsearch-maven-plugin</artifactId>
-                <version>6.0</version>
-                <configuration>
-                    <version>6.0.0</version>
-                    <clusterName>test</clusterName>
-                    <transportPort>9350</transportPort>
-                    <httpPort>9250</httpPort>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.21.0</version>
                 <executions>
                     <execution>
-                        <id>start-elasticsearch</id>
-                        <phase>process-test-sources</phase>
+                        <id>integration-test</id>
                         <goals>
-                            <goal>runforked</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-elasticsearch</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>stop</goal>
+                            <goal>integration-test</goal>
                         </goals>
                     </execution>
                 </executions>

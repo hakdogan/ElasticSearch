@@ -113,6 +113,12 @@ result = getDocuments(QueryBuilders.queryStringQuery("*" + query.toLowerCase() +
 DeleteRequest deleteRequest = new DeleteRequest(props.getIndex().getName(), props.getIndex().getType(), id);
 ```
 
+## How to compile?
+```
+mvn clean install
+```
+Testcontainers library needs Docker daemon, if you don't have it you should use `-Dmaven.test.skip=true` parameter.
+
 ## How to run?
 ```
 mvn spring-boot:run

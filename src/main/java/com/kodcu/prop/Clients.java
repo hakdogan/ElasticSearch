@@ -14,5 +14,6 @@ public class Clients {
     private String scheme;
     private int httpPort;
     private int transportPort;
-
+    private String credentialUsername;
+    private String credentialPassword;
 }

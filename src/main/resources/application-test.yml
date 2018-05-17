@@ -1,6 +1,3 @@
 app:
-  clients:
-    httpPort: 9250
-    transportPort: 9350
   index:
     name: kodcu_test

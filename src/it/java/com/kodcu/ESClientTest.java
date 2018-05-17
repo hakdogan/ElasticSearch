@@ -7,6 +7,7 @@ import com.kodcu.dao.QueryDAO;
 import com.kodcu.entity.Document;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -14,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.io.IOException;
 import java.util.List;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +45,12 @@ public class ESClientTest {
     }
 
     @Test
-    public void testc() throws IOException {
+    public void testC(){
+        assertFalse(dao.wildcardQuery("akd").isEmpty());
+    }
+
+    @Test
+    public void testD() throws IOException {
         List<Document> documentList = dao.matchAllQuery();
         documentList.forEach(doc -> dao.deleteDocument(doc.getId()));
         dao.flush();

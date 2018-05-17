@@ -4,6 +4,8 @@ app:
     scheme: http
     httpPort: 9200
     transportPort: 9300
+    credentialUsername: elastic
+    credentialPassword: changeme
   index:
     name: kodcu
     type: tutorial
