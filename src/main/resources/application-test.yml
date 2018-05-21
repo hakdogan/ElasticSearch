@@ -1,3 +1,5 @@
 app:
+  clients:
+    httpPort: 9250
   index:
     name: kodcu_test

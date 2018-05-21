@@ -6,7 +6,6 @@ package com.kodcu.config;
 
 import com.google.gson.Gson;
 import com.kodcu.prop.ConfigProps;
-import fr.pilato.elasticsearch.containers.ElasticsearchContainer;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -24,7 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.context.annotation.Profile;
-
+import org.testcontainers.containers.FixedHostPortGenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -55,14 +55,11 @@ public class Config {
     @Bean(destroyMethod = "close")
     public RestHighLevelClient getRestClientForTest() {
 
-        ElasticsearchContainer container = new ElasticsearchContainer();
-        container.start();
-
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(props.getClients().getCredentialUsername(), props.getClients().getCredentialPassword()));
-        return new RestHighLevelClient(RestClient.builder(container.getHost())
-                .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
+                new UsernamePasswordCredentials(props.getElastic().getCredentialUsername(), props.getElastic().getCredentialPassword()));
+        return new RestHighLevelClient(RestClient.builder(new HttpHost(getFixedHostPortGenericContainer().getContainerIpAddress(),
+                props.getClients().getHttpPort())).setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
     }
 
     @Bean
@@ -78,6 +75,19 @@ public class Config {
     @Bean
     public Gson getGson(){
         return new Gson();
+    }
+
+    @Bean(destroyMethod = "stop")
+    public FixedHostPortGenericContainer getFixedHostPortGenericContainer(){
+
+        String url = String.join(":", props.getElastic().getImageUrl(), props.getElastic().getVersion());
+
+        FixedHostPortGenericContainer fixed = new FixedHostPortGenericContainer(url);
+        fixed.withFixedExposedPort(props.getClients().getHttpPort(), props.getClients().getContainerPort());
+        fixed.waitingFor(Wait.forHttp("/"));
+        fixed.start();
+
+        return fixed;
     }
 
 }

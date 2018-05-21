@@ -7,7 +7,6 @@ import com.kodcu.dao.QueryDAO;
 import com.kodcu.entity.Document;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;

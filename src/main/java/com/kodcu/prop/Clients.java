@@ -13,7 +13,6 @@ public class Clients {
     private String hostname;
     private String scheme;
     private int httpPort;
+    private int containerPort;
     private int transportPort;
-    private String credentialUsername;
-    private String credentialPassword;
 }
