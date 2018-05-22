@@ -19,7 +19,7 @@ public class ConfigProps {
     private Clients clients = new Clients();
 
     @NestedConfigurationProperty
-    private Elastic elastic = new Elastic();
+    private ElasticContainer elastic = new ElasticContainer();
 
     @NestedConfigurationProperty
     private Index index = new Index();

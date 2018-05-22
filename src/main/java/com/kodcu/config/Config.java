@@ -9,7 +9,6 @@ import com.kodcu.prop.ConfigProps;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -44,7 +43,7 @@ public class Config {
                             props.getClients().getTransportPort()));
     }
 
-    @Profile("production")
+    @Profile({"production", "docker"})
     @Bean(destroyMethod = "close")
     public RestHighLevelClient getRestClient() {
         return new RestHighLevelClient(RestClient.builder(new HttpHost(props.getClients().getHostname(),
@@ -54,12 +53,8 @@ public class Config {
     @Profile("test")
     @Bean(destroyMethod = "close")
     public RestHighLevelClient getRestClientForTest() {
-
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(props.getElastic().getCredentialUsername(), props.getElastic().getCredentialPassword()));
         return new RestHighLevelClient(RestClient.builder(new HttpHost(getFixedHostPortGenericContainer().getContainerIpAddress(),
-                props.getClients().getHttpPort())).setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
+                props.getClients().getHttpPort())).setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(getCredentialsProvider())));
     }
 
     @Bean
@@ -77,6 +72,7 @@ public class Config {
         return new Gson();
     }
 
+    @Profile("test")
     @Bean(destroyMethod = "stop")
     public FixedHostPortGenericContainer getFixedHostPortGenericContainer(){
 
@@ -90,4 +86,11 @@ public class Config {
         return fixed;
     }
 
+    @Bean
+    public BasicCredentialsProvider getCredentialsProvider(){
+        final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(props.getElastic().getCredentialUsername(), props.getElastic().getCredentialPassword()));
+        return credentialsProvider;
+    }
 }

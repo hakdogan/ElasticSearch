@@ -11,7 +11,7 @@
 </head>
 <body style="padding-left: 10px !important; padding-right: 10px !important;">
 <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">ElasticSearch Java High Level REST Client Tutorial</a>
+    <a class="navbar-brand" href="#">ElasticSearch Java API Tutorial</a>
     <form class="form-inline">
         <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -21,23 +21,23 @@
 <form>
     <input type="hidden" id="docId"/>
     <div class="form-group row">
-        <label for="firstName" class="col-sm-2 col-form-label">First name</label>
+        <label for="title" class="col-sm-2 col-form-label">Title</label>
         <div class="col-sm-10">
-            <input id="firstName" type="text" class="form-control" placeholder="First name" required/>
+            <input id="title" type="text" class="form-control" placeholder="Title" required/>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="lastName" class="col-sm-2 col-form-label">Last name</label>
+        <label for="subject" class="col-sm-2 col-form-label">Subject</label>
         <div class="col-sm-10">
-            <input id="lastName" type="text" class="form-control" placeholder="Last name" required/>
+            <input id="subject" type="text" class="form-control" placeholder="Subject" required/>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="message" class="col-sm-2 col-form-label">Message</label>
+        <label for="content" class="col-sm-2 col-form-label">Content</label>
         <div class="col-sm-10">
-            <textarea id="message" class="form-control" rows="3" placeholder="Message" required></textarea>
+            <textarea id="content" class="form-control" rows="3" placeholder="Content" required></textarea>
         </div>
     </div>
 
@@ -52,9 +52,9 @@
 <table id="myTable" class="table table-striped">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Message</th>
+            <th scope="col">Title</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Content</th>
             <th scope="col">Action</th>
         </tr>
     </thead>

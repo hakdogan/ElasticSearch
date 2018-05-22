@@ -124,9 +124,13 @@ Testcontainers library needs Docker daemon, if you don't have it you should use 
 mvn spring-boot:run
 ```
 
+With this option, you should provide an `elasticsearch server`.
+
 ## How to run with Docker?
 ```
-docker run -d --name elasticsearch -p 8080:8080 hakdogan/elasticsearch:newVersion
+sh run.sh
 ```
+
+With this option, this application and an `elasticsearch server` run together.
 
 ![](image/image.gif)

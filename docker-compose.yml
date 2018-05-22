@@ -1,13 +1,18 @@
 version: '3.2'
 services:
   eleasticserver:
-    image: elasticsearch:latest
-    container_name: eleasticserver
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.1
+    container_name: eleastic_server
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
   eleasticclient:
-    build:
-      context: .
+    image: hakdogan/elasticsearch:newVersion
     ports:
       - 8080:8080
-    container_name: eleasticclient
+    container_name: eleastic_client
     depends_on:
       - eleasticserver

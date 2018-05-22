@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Elastic {
+public class ElasticContainer {
     private String imageUrl;
     private String version;
     private String credentialUsername;

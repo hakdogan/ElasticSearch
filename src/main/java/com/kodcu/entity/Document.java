@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Document {
     private String id;
-    private String firstname;
-    private String lastname;
-    private String message;
+    private String title;
+    private String subject;
+    private String content;
 }

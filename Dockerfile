@@ -8,10 +8,12 @@ COPY pom.xml ElasticSearch/
 
 COPY src/ ElasticSearch/src/
 
+COPY wait-for-container.sh /wait-for-container.sh
+
 WORKDIR ElasticSearch/
 
 RUN mvn clean install -Dmaven.test.skip=true
 
 EXPOSE 8080
 
-CMD ["sh","-c", "java -Dnetworkaddress.cache.ttl=60 -jar /ElasticSearch/target/ElasticSearch.jar"]
+ENTRYPOINT ["sh", "/wait-for-container.sh"]
