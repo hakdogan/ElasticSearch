@@ -6,77 +6,101 @@ package com.kodcu.util;
 
 import com.kodcu.prop.ConfigProps;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
-import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
-import org.elasticsearch.client.IndicesAdminClient;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.CreateIndexResponse;
+import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.client.indices.PutMappingRequest;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 @Slf4j
 @Component
-@Profile("production")
+@Profile({"production", "docker", "test"})
 public class IndexConfigurator {
 
-    private final TransportClient transportClient;
+    private final RestHighLevelClient client;
     private final ConfigProps props;
 
-    public IndexConfigurator(TransportClient transportClient, ConfigProps props) {
-        this.transportClient = transportClient;
+    public IndexConfigurator(final RestHighLevelClient client, final ConfigProps props) {
+        this.client = client;
         this.props = props;
     }
 
     @PostConstruct
     private void createIndexWithMapping() {
 
-        IndicesAdminClient indicesAdminClient = transportClient.admin().indices();
-        IndicesExistsRequest request = new IndicesExistsRequest(props.getIndex().getName());
-        IndicesExistsResponse indicesExistsResponse = indicesAdminClient.exists(request).actionGet();
+        try {
 
-        if(!indicesExistsResponse.isExists()){
+            final GetIndexRequest request = new GetIndexRequest(props.getIndex().getName());
+            final boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
 
-            indicesAdminClient.prepareCreate(props.getIndex().getName())
-                    .setSettings(Settings.builder()
-                            .put("index.number_of_shards", props.getIndex().getShard())
-                            .put("index.number_of_replicas", props.getIndex().getReplica()))
-                    .get();
+            if (!exists) {
 
-            log.info("Index was created");
+                final CreateIndexRequest indexRequest = new CreateIndexRequest(props.getIndex().getName());
+                indexRequest.settings(Settings.builder()
+                        .put("index.number_of_shards", props.getIndex().getShard())
+                        .put("index.number_of_replicas", props.getIndex().getReplica())
+                );
 
-            try {
-                XContentBuilder builder = jsonBuilder()
-                        .startObject()
-                            .startObject(props.getIndex().getType())
-                                .startObject("properties")
-                                    .startObject("id")
-                                        .field("type", "text")
-                                    .endObject()
-                                    .startObject("firstname")
-                                    .field("type", "text")
-                                    .endObject()
-                                    .startObject("lastname")
-                                    .field("type", "text")
-                                    .endObject()
-                                    .startObject("message")
-                                    .field("type", "text")
-                                    .endObject()
-                                .endObject()
-                            .endObject()
-                        .endObject();
+                final CreateIndexResponse createIndexResponse = client.indices().create(indexRequest, RequestOptions.DEFAULT);
+                if (createIndexResponse.isAcknowledged() && createIndexResponse.isShardsAcknowledged()) {
+                    log.info("{} index created successfully", props.getIndex().getName());
+                } else {
+                    log.debug("Failed to create {} index", props.getIndex().getName());
+                }
 
-                indicesAdminClient.preparePutMapping(props.getIndex().getName())
-                        .setType(props.getIndex().getType())
-                        .setSource(builder.string(), XContentType.JSON)
-                        .get();
-            } catch (IOException ex){
-                log.error("The exception was thrown in createIndexWithMapping method. {} ", ex);
+                final PutMappingRequest mappingRequest = new PutMappingRequest(props.getIndex().getName());
+                final XContentBuilder builder = XContentFactory.jsonBuilder();
+
+                builder.startObject();
+                {
+                    builder.startObject("properties");
+                    {
+                        builder.startObject("id");
+                        {
+                            builder.field("type", "text");
+                        }
+                        builder.endObject();
+
+                        builder.startObject("title");
+                        {
+                            builder.field("type", "text");
+                        }
+                        builder.endObject();
+
+                        builder.startObject("subject");
+                        {
+                            builder.field("type", "text");
+                        }
+                        builder.endObject();
+
+                        builder.startObject("content");
+                        {
+                            builder.field("type", "text");
+                        }
+                        builder.endObject();
+                    }
+                    builder.endObject();
+                }
+                builder.endObject();
+                mappingRequest.source(builder);
+                final AcknowledgedResponse putMappingResponse = client.indices().putMapping(mappingRequest, RequestOptions.DEFAULT);
+
+                if (putMappingResponse.isAcknowledged()) {
+                    log.info("Mapping of {} was successfully created", props.getIndex().getName());
+                } else {
+                    log.debug("Creating mapping of {} failed", props.getIndex().getName());
+                }
             }
+        } catch (Exception ex) {
+            log.error("An exception was thrown in createIndexWithMapping method.", ex);
         }
     }
 }

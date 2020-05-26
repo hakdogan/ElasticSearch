@@ -4,31 +4,20 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/0da01a34f91c4120aafbef85506b08d9)](https://www.codacy.com/app/hakdogan/ElasticSearch?utm_source=github.com&utm_medium=referral&utm_content=hakdogan/ElasticSearch&utm_campaign=Badge_Coverage)
 [![Analytics](https://ga-beacon.appspot.com/UA-110069051-1/ElasticSearch/readme)](https://github.com/igrigorik/ga-beacon)
 
-Illustration and demonstration use of ElasticSearch
+A Demonstration of How to Use the Elasticsearch Java API
 ===================================================
 
-This repository illustrates and demonstrates the use of ElasticSearch Java API via `Transport Client` and `Java High Level REST Client`. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
+This repository demonstrates the use of Elasticsearch Java API via `Java High Level REST Client`. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
 
 ## What you will learn in this repository?
 
-* How to use Transport Client
+* How to use Java High Level REST Client
   * How to perform Administration operations
   * Index creation
   * Mapping settings
-* How to use Java High Level REST Client
   * How to perform CRUD operations
 
-### Initialization Transport Client
-```java
-    @Bean(destroyMethod = "close")
-    public TransportClient getTransportClient() throws UnknownHostException {
-        try (TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
-                .addTransportAddress(new TransportAddress(InetAddress.getByName(props.getClients().getHostname()),
-                        props.getClients().getTransportPort()))){
-            return client;
-        }
-    }
-```
+
 
 ### Initialization Java High Level REST Client
 ```java
@@ -39,53 +28,47 @@ This repository illustrates and demonstrates the use of ElasticSearch Java API v
     }
 ```
 
-### Index creation with Transport Client
+### Index creation and Shard, Replica settings with Java High Level REST Client
 ```java
-IndicesExistsRequest request = new IndicesExistsRequest(props.getIndex().getName());
-IndicesExistsResponse indicesExistsResponse = indicesAdminClient.exists(request).actionGet();
-```
+final GetIndexRequest request = new GetIndexRequest(props.getIndex().getName());
+final boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
 
-### Shard and Replica Settings
-```java
-indicesAdminClient.prepareCreate(props.getIndex().getName())
-    .setSettings(Settings.builder()
-        .put("index.number_of_shards", props.getIndex().getShard())
-        .put("index.number_of_replicas", props.getIndex().getReplica()))
-    .get();
+if (!exists) {
+    
+  final CreateIndexRequest indexRequest = new CreateIndexRequest(props.getIndex().getName());
+  indexRequest.settings(Settings.builder()
+       .put("index.number_of_shards", props.getIndex().getShard())
+       .put("index.number_of_replicas", props.getIndex().getReplica())
+  );
+
+  final CreateIndexResponse createIndexResponse = client.indices().create(indexRequest, RequestOptions.DEFAULT);
+  if (createIndexResponse.isAcknowledged() && createIndexResponse.isShardsAcknowledged()) {
+      log.info("{} index created successfully", props.getIndex().getName());
+  } else {
+      log.debug("Failed to create {} index", props.getIndex().getName());
+  }
+
+}
 ```
 
 ### Mapping Settings
 ```java
-    XContentBuilder builder = jsonBuilder()
-        .startObject()
-            .startObject(props.getIndex().getType())
-                .startObject("properties")
-                    .startObject("id")
-                        .field("type", "text")
-                    .endObject()
-                    .startObject("firstname")
-                        .field("type", "text")
-                    .endObject()
-                    .startObject("lastname")
-                        .field("type", "text")
-                    .endObject()
-                    .startObject("message")
-                        .field("type", "text")
-                    .endObject()
-                .endObject()
-            .endObject()
-        .endObject();
-        
-    indicesAdminClient.preparePutMapping(props.getIndex().getName())
-        .setType(props.getIndex().getType())
-        .setSource(builder.string(), XContentType.JSON).get();
-```
+    
+final PutMappingRequest mappingRequest = new PutMappingRequest(props.getIndex().getName());
+final XContentBuilder builder = XContentFactory.jsonBuilder();
+    
+builder.startObject();
+...
+builder.endObject();        
 
-### Index creation with Java High Level REST Client
-```java
-IndexRequest request = new IndexRequest(props.getIndex().getName(), props.getIndex().getType());
-request.source(gson.toJson(document), XContentType.JSON);
-IndexResponse response = client.index(request);
+mappingRequest.source(builder);
+final AcknowledgedResponse putMappingResponse = client.indices().putMapping(mappingRequest, RequestOptions.DEFAULT);
+
+if (putMappingResponse.isAcknowledged()) {
+    log.info("Mapping of {} was successfully created", props.getIndex().getName());
+} else {
+    log.debug("Creating mapping of {} failed", props.getIndex().getName());
+}
 ```
 
 ### Using SearchSourceBuilder and showing search results
@@ -93,7 +76,7 @@ IndexResponse response = client.index(request);
 sourceBuilder.query(builder);
 SearchRequest searchRequest = getSearchRequest();
 
-SearchResponse searchResponse = client.search(searchRequest);
+SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
 SearchHits hits = searchResponse.getHits();
 SearchHit[] searchHits = hits.getHits();
 for (SearchHit hit : searchHits) {
@@ -110,14 +93,15 @@ result = getDocuments(QueryBuilders.queryStringQuery("*" + query.toLowerCase() +
 
 ### Document deletion
 ```
-DeleteRequest deleteRequest = new DeleteRequest(props.getIndex().getName(), props.getIndex().getType(), id);
+final DeleteRequest deleteRequest = new DeleteRequest(props.getIndex().getName(), id);
+client.delete(deleteRequest, RequestOptions.DEFAULT);
 ```
 
 ## How to compile?
 ```
 mvn clean install
 ```
-Testcontainers library needs Docker daemon, if you don't have it you should use `-Dmaven.test.skip=true` parameter.
+The docker-maven-plugin needs Docker daemon, if you don't have it you should use `-Dmaven.test.skip=true -Ddocker.skip` parameters.
 
 ## How to run?
 ```

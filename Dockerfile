@@ -12,7 +12,7 @@ COPY wait-for-container.sh /wait-for-container.sh
 
 WORKDIR ElasticSearch/
 
-RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn clean install -Dmaven.test.skip=true -Ddocker.skip
 
 EXPOSE 8080
 

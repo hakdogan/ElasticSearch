@@ -12,6 +12,4 @@ import lombok.Setter;
 public class ElasticContainer {
     private String imageUrl;
     private String version;
-    private String credentialUsername;
-    private String credentialPassword;
 }

@@ -5,7 +5,6 @@ package com.kodcu.controller;
 
 import com.kodcu.dao.QueryDAO;
 import com.kodcu.entity.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,8 +12,11 @@ import java.util.List;
 @RestController
 public class RestRequestController {
 
-    @Autowired
-    private QueryDAO dao;
+    private final QueryDAO dao;
+
+    public RestRequestController(final QueryDAO dao){
+        this.dao = dao;
+    }
 
     /**
      *
@@ -23,7 +25,7 @@ public class RestRequestController {
      */
     @PostMapping(value = "/api/create", consumes = "application/json; charset=utf-8")
     public String create(@RequestBody Document document) {
-        return dao.createIndex(document);
+        return dao.indexRequest(document);
     }
 
     @PostMapping(value = "/api/update", consumes = "application/json; charset=utf-8")

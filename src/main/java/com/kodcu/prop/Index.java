@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class Index {
     private String name;
-    private String type;
     private int shard;
     private int replica;
     private int from;

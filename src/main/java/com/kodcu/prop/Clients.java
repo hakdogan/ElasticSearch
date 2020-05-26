@@ -13,5 +13,4 @@ public class Clients {
     private String scheme;
     private int httpPort;
     private int containerPort;
-    private int transportPort;
 }

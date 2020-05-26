@@ -33,13 +33,12 @@ public class ESClientTest {
     private Document doc = new Document(null, "Hüseyin", "Akdoğan", "Hello!");
 
     @Test
-    public void testA() throws IOException {
-        assertNotNull(dao.createIndex(doc));
-        dao.flush();
+    public void testA() {
+        assertNotNull(dao.indexRequest(doc));
     }
 
     @Test
-    public void testB(){
+    public void testB() {
         assertFalse(dao.matchAllQuery().isEmpty());
     }
 
@@ -50,9 +49,9 @@ public class ESClientTest {
 
     @Test
     public void testD() throws IOException {
-        List<Document> documentList = dao.matchAllQuery();
+        final List<Document> documentList = dao.matchAllQuery();
         documentList.forEach(doc -> dao.deleteDocument(doc.getId()));
-        dao.flush();
+        dao.refreshRequest();
         assertTrue(dao.matchAllQuery().isEmpty());
     }
 }

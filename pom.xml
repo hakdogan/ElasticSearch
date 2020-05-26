@@ -20,9 +20,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <elastic.version>6.2.4</elastic.version>
-        <lucene.version>7.2.1</lucene.version>
-        <test.container.version>1.7.2</test.container.version>
+        <elastic.version>7.7.0</elastic.version>
+        <lucene.version>8.5.1</lucene.version>
+        <test.container.version>1.14.2</test.container.version>
         <gson.version>2.8.2</gson.version>
         <maven.jacoco.version>0.7.6.201602180812</maven.jacoco.version>
     </properties>
@@ -30,7 +30,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>2.3.0.RELEASE</version>
     </parent>
 
     <dependencies>
@@ -97,14 +97,11 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>${test.container.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>1.18.12</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -123,7 +120,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>add-test-source</id>
@@ -142,11 +139,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.21.0</version>
+                <version>3.0.0-M4</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                    <skipITs>true</skipITs>
                 </configuration>
                 <executions>
                     <execution>
@@ -160,7 +158,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
+                <version>0.8.5</version>
                 <executions>
                     <execution>
                         <id>pre-integration-test</id>
@@ -181,10 +179,60 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
+                <version>3.0.0-M4</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+
+                <configuration>
+                    <watchInterval>500</watchInterval>
+                    <logDate>default</logDate>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>docker.elastic.co/elasticsearch/elasticsearch:${elastic.version}</name>
+                            <run>
+                                <ports>
+                                    <port>9250:9200</port>
+                                </ports>
+                                <env>
+                                    <!-- specify single-node discovery to bypass the bootstrap checks -->
+                                    <discovery.type>single-node</discovery.type>
+                                </env>
+                                <log>
+                                    <prefix>Elasticsearch:</prefix>
+                                    <enabled>true</enabled>
+                                    <color>yellow</color>
+                                </log>
+                                <wait>
+                                    <time>60000</time>
+                                    <log>.*"message": "started".*</log>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
