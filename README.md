@@ -1,10 +1,4 @@
-[![Build Status](https://travis-ci.org/hakdogan/ElasticSearch.svg?branch=master)](https://travis-ci.org/hakdogan/ElasticSearch)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0da01a34f91c4120aafbef85506b08d9)](https://www.codacy.com/app/hakdogan/ElasticSearch?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hakdogan/ElasticSearch&amp;utm_campaign=Badge_Grade)
-!["Docker Pulls](https://img.shields.io/docker/pulls/hakdogan/elasticsearch.svg)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/0da01a34f91c4120aafbef85506b08d9)](https://www.codacy.com/app/hakdogan/ElasticSearch?utm_source=github.com&utm_medium=referral&utm_content=hakdogan/ElasticSearch&utm_campaign=Badge_Coverage)
-[![Analytics](https://ga-beacon.appspot.com/UA-110069051-1/ElasticSearch/readme)](https://github.com/igrigorik/ga-beacon)
-
-A Demonstration of How to Use the Elasticsearch Java API
+A demonstration of how to use Elasticsearch Java API
 ===================================================
 
 This repository demonstrates the use of Elasticsearch Java API via `Java High Level REST Client`. If you want to see the sample of the old version, please visit the [oldVersion](https://github.com/hakdogan/ElasticSearch/tree/oldVersion) branch.
